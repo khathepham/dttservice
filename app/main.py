@@ -7,9 +7,25 @@ from starlette.staticfiles import StaticFiles
 from pydantic import BaseModel
 from camp2025.Registrant import Registrant
 from camp2025 import airtable_database
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://doantomathien.org",
+    "https://www.doantomathien.org",
+]
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
@@ -69,8 +85,8 @@ async def register( firstName: Annotated[str, Form()],
     registrant = Registrant(
         first_name=firstName,
         last_name=lastName,
-        date_of_birth=birthdate,
-        gender=gender,
+        date_of_birth=datetime.datetime.fromisoformat(birthdate),
+        gender=gender.capitalize(),
         nganh=nganh,
         special_needs=specialNeeds,
         guardian_name=parentName,

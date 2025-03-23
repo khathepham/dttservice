@@ -50,7 +50,7 @@ def create_new_registrant(registrant:Registrant):
     data = {
         "First Name": registrant.first_name,
         "Last Name": registrant.last_name,
-        "Date of Birth": registrant.date_of_birth,
+        "Date of Birth": registrant.date_of_birth.isoformat(),
         "Gender": registrant.gender,
         "Ngành": registrant.nganh,
         "Special Needs": registrant.special_needs,
