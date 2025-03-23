@@ -1,8 +1,10 @@
 import datetime
+import enum
 import os
+import traceback
 from typing import Annotated
 
-from fastapi import FastAPI, Form, UploadFile, File
+from fastapi import FastAPI, Form, UploadFile, File, HTTPException
 from starlette.staticfiles import StaticFiles
 from pydantic import BaseModel
 from camp2025.Registrant import Registrant
@@ -38,6 +40,12 @@ async def root():
 app.mount("/camp2025/registrant_images", StaticFiles(directory="app/camp2025/registrant_images"), name="registrant_images")
 # async def say_hello(name: str):
 #     return {"message": f"Hello {name}"}
+
+class Nganh(enum.Enum):
+    AU_NHI = "Ấu Nhi"
+    THIEU_NHI = "Thiếu Nhi"
+    NGHIA_SI = "Nghĩa Sĩ"
+    HIEP_SI = "Hiệp Sĩ"
 
 
 class Registration(BaseModel):
@@ -91,7 +99,7 @@ async def register( firstName: Annotated[str, Form()],
             last_name=lastName,
             date_of_birth=datetime.datetime.fromisoformat(birthdate),
             gender=gender.capitalize(),
-            nganh=nganh,
+            nganh=find_nganh(nganh),
             special_needs=specialNeeds,
             guardian_name=parentName,
             guardian_number=parentPhone,
@@ -100,8 +108,24 @@ async def register( firstName: Annotated[str, Form()],
         )
 
         airtable_database.create_new_registrant(registrant)
+        return {"message": "Successfully registered!"}
     except Exception as error:
         lg.error(error)
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(error))
 
 
+def find_nganh(n: str):
+    n.lower().strip()
 
+    match n:
+        case "au nhi":
+            return Nganh.AU_NHI
+        case "thieu nhi":
+            return Nganh.THIEU_NHI
+        case "nghia si":
+            return Nganh.NGHIA_SI
+        case "hiep si":
+            return Nganh.HIEP_SI
+        case _:
+            return None
