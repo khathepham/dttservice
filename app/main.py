@@ -116,16 +116,16 @@ async def register( firstName: Annotated[str, Form()],
 
 
 def find_nganh(n: str) -> None | str:
-    n.lower().strip()
-
+    n = n.strip()
+    print(n)
     match n:
-        case "au nhi":
+        case "Au Nhi" | Nganh.AU_NHI.value:
             return Nganh.AU_NHI.value
-        case "thieu nhi":
+        case "Thieu Nhi" | Nganh.THIEU_NHI:
             return Nganh.THIEU_NHI.value
-        case "nghia si":
+        case "Nghia Si" | Nganh.NGHIA_SI.value:
             return Nganh.NGHIA_SI.value
-        case "hiep si":
+        case "Hiep Si" | Nganh.HIEP_SI.value:
             return Nganh.HIEP_SI.value
         case _:
             return None

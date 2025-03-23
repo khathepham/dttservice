@@ -62,7 +62,7 @@ def create_new_registrant(registrant:Registrant):
         }]
     }
 
-    table.create(data)
+    table.create(data, typecast=True)
 
     logging.info(f"Created new registrant: {registrant.first_name} {registrant.last_name}")
 
