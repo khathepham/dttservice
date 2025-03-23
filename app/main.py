@@ -115,17 +115,17 @@ async def register( firstName: Annotated[str, Form()],
         raise HTTPException(status_code=500, detail=str(error))
 
 
-def find_nganh(n: str):
+def find_nganh(n: str) -> None | str:
     n.lower().strip()
 
     match n:
         case "au nhi":
-            return Nganh.AU_NHI
+            return Nganh.AU_NHI.value
         case "thieu nhi":
-            return Nganh.THIEU_NHI
+            return Nganh.THIEU_NHI.value
         case "nghia si":
-            return Nganh.NGHIA_SI
+            return Nganh.NGHIA_SI.value
         case "hiep si":
-            return Nganh.HIEP_SI
+            return Nganh.HIEP_SI.value
         case _:
             return None
