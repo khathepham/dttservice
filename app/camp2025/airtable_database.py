@@ -1,11 +1,10 @@
 import os
-import sys
 import pyairtable
 from infisical_sdk import InfisicalSDKClient
 import datetime
 import dotenv
 import logging
-from app.Registrant import Registrant
+from camp2025.Registrant import Registrant
 
 lg = logging.getLogger(__name__)
 

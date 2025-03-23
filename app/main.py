@@ -5,9 +5,9 @@ from typing import Annotated
 from fastapi import FastAPI, Form, UploadFile, File
 from starlette.staticfiles import StaticFiles
 from pydantic import BaseModel
-from app.Registrant import Registrant
-from app.camp2025 import airtable_database
-import uuid
+from camp2025.Registrant import Registrant
+from camp2025 import airtable_database
+
 app = FastAPI()
 
 
